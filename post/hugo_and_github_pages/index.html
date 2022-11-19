@@ -1,0 +1,174 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>使用Hugo建立静态博客，并托管在Github Pages上 - 张胜东的博客</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="张胜东"><meta name=description content="从netfily迁移到github pages netfily被封 其实，早在3年前，我刚建立新博客的时候，就是托管在netfily上的，本博客的第一篇内"><meta name=keywords content="张胜东,博客,编程"><meta name=baidu-site-verification content="qWR9jJPJ9e"><meta name=google-site-verification content="s9FkJZw4X2alyC8-nsdZgiPHBwX6uqr1QVNxRaGfDKY"><meta name=generator content="Hugo 0.102.3 with theme even"><link rel=canonical href=https://www.zhangshengdong.com/post/hugo_and_github_pages/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><script async src=//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js></script>
+<link href=/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="使用Hugo建立静态博客，并托管在Github Pages上"><meta property="og:description" content="从netfily迁移到github pages netfily被封 其实，早在3年前，我刚建立新博客的时候，就是托管在netfily上的，本博客的第一篇内"><meta property="og:type" content="article"><meta property="og:url" content="https://www.zhangshengdong.com/post/hugo_and_github_pages/"><meta property="article:section" content="post"><meta property="article:published_time" content="2022-11-19T23:56:52+08:00"><meta property="article:modified_time" content="2022-11-20T01:29:42+08:00"><meta itemprop=name content="使用Hugo建立静态博客，并托管在Github Pages上"><meta itemprop=description content="从netfily迁移到github pages netfily被封 其实，早在3年前，我刚建立新博客的时候，就是托管在netfily上的，本博客的第一篇内"><meta itemprop=datePublished content="2022-11-19T23:56:52+08:00"><meta itemprop=dateModified content="2022-11-20T01:29:42+08:00"><meta itemprop=wordCount content="1443"><meta itemprop=keywords content="hugo,github,"><meta name=twitter:card content="summary"><meta name=twitter:title content="使用Hugo建立静态博客，并托管在Github Pages上"><meta name=twitter:description content="从netfily迁移到github pages netfily被封 其实，早在3年前，我刚建立新博客的时候，就是托管在netfily上的，本博客的第一篇内"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>张胜东的博客</a></div><div class=mobile-navbar-icon><span></span>
+<span></span>
+<span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/tags/><li class=mobile-menu-item>Tags</li></a><a href=/categories/><li class=mobile-menu-item>Categories</li></a><a href=/about/><li class=mobile-menu-item>About</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>张胜东的博客</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/tags/>Tags</a></li><li class=menu-item><a class=menu-item-link href=/categories/>Categories</a></li><li class=menu-item><a class=menu-item-link href=/about/>About</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>使用Hugo建立静态博客，并托管在Github Pages上</h1><div class=post-meta><span class=post-time>2022-11-19</span><div class=post-category><a href=/categories/%E5%B7%A5%E7%A8%8B/>工程</a></div><span class=more-meta>约 1443 字</span>
+<span class=more-meta>预计阅读 3 分钟</span>
+<span id=busuanzi_container_page_pv class=more-meta><span id=busuanzi_value_page_pv><img src=/img/spinner.svg alt=spinner.svg></span> 次阅读</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>文章目录</h2><div class="post-toc-content always-active"><nav id=TableOfContents><ul><li><ul><li><a href=#从netfily迁移到github-pages>从netfily迁移到github pages</a><ul><li><a href=#netfily被封>netfily被封</a></li><li><a href=#使用github-pages>使用github pages</a></li></ul></li><li><a href=#github流水线>github流水线</a><ul><li><a href=#自动化流程>自动化流程</a></li><li><a href=#hugo-github-action>hugo github action</a></li><li><a href=#自动上传至网页发布仓>自动上传至网页发布仓</a></li><li><a href=#配置自动发布网站和自定义域名>配置自动发布网站和自定义域名</a></li><li><a href=#解决自定义域名自动消失的问题>解决自定义域名自动消失的问题</a></li></ul></li></ul></li></ul></nav></div></div><div class=post-content><h2 id=从netfily迁移到github-pages>从netfily迁移到github pages</h2><h3 id=netfily被封>netfily被封</h3><p>其实，早在3年前，我刚建立新博客的时候，就是托管在netfily上的，本博客的第一篇内容 《使用Hugo和Netlify建立静态博客，并托管在Github上》 <a href=https://www.zhangshengdong.com/post/hugo_and_netlify/>https://www.zhangshengdong.com/post/hugo_and_netlify/</a> ，就是在写这件事。</p><p>但很快，netfily的登陆由于用到了google的脚本，被大陆封了。只是对于像我这样的老用户，只是不能登录而已，新文章依然可以自动从github仓库里同步发布，所以也就没在意。</p><p>可是两天前，我新写了一篇博客，本地hugo编译没问题，可是netfily却一直编译不成功。但即使翻墙，也无法登录查看原因。只好开始考虑寻找新的托管网站。</p><h3 id=使用github-pages>使用github pages</h3><p>在知乎上对比了一圈托管网站，发现国内的大多要钱，或者设置复杂。最方便使用的，好像也就是github pages了。但这样一来，就没有了免费cdn，网页加载速度慢了许多。</p><h2 id=github流水线>github流水线</h2><h3 id=自动化流程>自动化流程</h3><p>github pages最好是设置一个名为username.github.io的仓库。但很不巧的是，我的博客源码之前就是保存在我的blog仓库中。而github pages生成的二级域名，对于网站好像不太友好。所以只能设计一个自动化流程：</p><ol><li>在源码blog仓库中，设置github action，自动编译静态网页；</li><li>将编译出的public文件夹上传至新的BZ-coding组织的BZ-coding.github.io仓库；</li><li>将BZ-coding.github.io仓库选择master分支自动发布github pages网页。</li></ol><h3 id=hugo-github-action>hugo github action</h3><p>在blog仓新增自动编译hugo的github action：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># Sample workflow for building and deploying a Hugo site to GitHub Pages</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Deploy Hugo site to Pages</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>on</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Runs on pushes targeting the default branch</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>push</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>branches</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;master&#34;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Allows you to run this workflow manually from the Actions tab</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>workflow_dispatch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>permissions</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>contents</span><span class=p>:</span><span class=w> </span><span class=l>read</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>pages</span><span class=p>:</span><span class=w> </span><span class=l>write</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>id-token</span><span class=p>:</span><span class=w> </span><span class=l>write</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Allow one concurrent deployment</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>concurrency</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>group</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;pages&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>cancel-in-progress</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Default to bash</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>defaults</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>run</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>shell</span><span class=p>:</span><span class=w> </span><span class=l>bash</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>jobs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Build job</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>build</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>runs-on</span><span class=p>:</span><span class=w> </span><span class=l>ubuntu-latest</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>env</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>HUGO_VERSION</span><span class=p>:</span><span class=w> </span><span class=m>0.102.3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>steps</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Install Hugo CLI</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>run</span><span class=p>:</span><span class=w> </span><span class=p>|</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_Linux-64bit.deb \
+</span></span></span><span class=line><span class=cl><span class=sd>          &amp;&amp; sudo dpkg -i ${{ runner.temp }}/hugo.deb</span><span class=w>          
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Checkout</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>uses</span><span class=p>:</span><span class=w> </span><span class=l>actions/checkout@v3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>with</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>submodules</span><span class=p>:</span><span class=w> </span><span class=l>recursive</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Build with Hugo</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>run</span><span class=p>:</span><span class=w> </span><span class=p>|</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          echo &#34;pwd is &#34;
+</span></span></span><span class=line><span class=cl><span class=sd>          pwd
+</span></span></span><span class=line><span class=cl><span class=sd>          ls
+</span></span></span><span class=line><span class=cl><span class=sd>          hugo --minify --verbose</span><span class=w>          
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Display</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>run</span><span class=p>:</span><span class=w> </span><span class=p>|</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          echo &#34;github.workspace is ${{ github.workspace }}&#34;
+</span></span></span><span class=line><span class=cl><span class=sd>          ls ${{ github.workspace }}
+</span></span></span><span class=line><span class=cl><span class=sd>          echo &#34;github.workspace public is ${{ github.workspace }}/public&#34;
+</span></span></span><span class=line><span class=cl><span class=sd>          ls ./public</span><span class=w>          
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Deploy</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>uses</span><span class=p>:</span><span class=w> </span><span class=l>peaceiris/actions-gh-pages@v3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>with</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>deploy_key</span><span class=p>:</span><span class=w> </span><span class=l>${{ secrets.ACTIONS_DEPLOY_KEY }}</span><span class=w> </span><span class=c># 这里的 ACTIONS_DEPLOY_KEY 则是上面设置 Private Key的变量名</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>external_repository</span><span class=p>:</span><span class=w> </span><span class=l>BZ-coding/BZ-coding.github.io</span><span class=w> </span><span class=c># Pages 远程仓库 </span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>publish_dir</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;./public&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>keep_files</span><span class=p>:</span><span class=w> </span><span class=kc>false</span><span class=w> </span><span class=c># remove existing files</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>publish_branch</span><span class=p>:</span><span class=w> </span><span class=l>master </span><span class=w> </span><span class=c># deploying branch</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>commit_message</span><span class=p>:</span><span class=w> </span><span class=l>${{ github.event.head_commit.message }}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=自动上传至网页发布仓>自动上传至网页发布仓</h3><p>在上面脚本的最后，加入了把编译结果文件上传至另一个仓库的代码：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Deploy</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>uses</span><span class=p>:</span><span class=w> </span><span class=l>peaceiris/actions-gh-pages@v3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>with</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>deploy_key</span><span class=p>:</span><span class=w> </span><span class=l>${{ secrets.ACTIONS_DEPLOY_KEY }}</span><span class=w> </span><span class=c># 这里的 ACTIONS_DEPLOY_KEY 则是上面设置 Private Key的变量名</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>external_repository</span><span class=p>:</span><span class=w> </span><span class=l>BZ-coding/BZ-coding.github.io</span><span class=w> </span><span class=c># Pages 远程仓库 </span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>publish_dir</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;./public&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>keep_files</span><span class=p>:</span><span class=w> </span><span class=kc>false</span><span class=w> </span><span class=c># remove existing files</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>publish_branch</span><span class=p>:</span><span class=w> </span><span class=l>master </span><span class=w> </span><span class=c># deploying branch</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>commit_message</span><span class=p>:</span><span class=w> </span><span class=l>${{ github.event.head_commit.message }}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>其中，需要把目标账号里的ssh公钥，对应的私钥，配置在blog仓库的secrets里。</p><p>并且，这边的上传，现在好像不能分成两个job，否则好像会public里为空。</p><h3 id=配置自动发布网站和自定义域名>配置自动发布网站和自定义域名</h3><p>把网页发布仓BZ-coding/BZ-coding.github.io，里的github pages配置成master的根目录。</p><p>然后在BZ-coding账号里验证zhangshengdong.com域名之后，就可以在github pages配置的自定义域名里配上www.zhangshengdong.com了。还可以强制打开https。</p><h3 id=解决自定义域名自动消失的问题>解决自定义域名自动消失的问题</h3><p>但是随后发现，每次网页代码更新后，BZ-coding.github.io的自定义域名就会消失。</p><p>经搜索，得知，要在生成的网站根目录里添加CNAME文件，文件内容就写你想自定义的域名就行，比如www.zhangshengdong.com 。</p></div><div class=post-reward><input type=checkbox name=reward id=reward hidden>
+<label class=reward-button for=reward>赞赏支持</label><div class=qr-code><label class=qr-code-image for=reward><img class=image src=/images/money_weixin_20200719212002.png>
+<span>微信打赏</span></label>
+<label class=qr-code-image for=reward><img class=image src=/images/alipay_20200801211208.png>
+<span>支付宝打赏</span></label></div></div><footer class=post-footer><div class=post-tags><a href=/tags/hugo/>hugo</a>
+<a href=/tags/github/>github</a></div><nav class=post-nav><a class=next href=/post/lpr_remote/><span class="next-text nav-default">远程打印文件</span>
+<span class="next-text nav-mobile">下一篇</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div><div id=gitalk-container></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js crossorigin=anonymous></script>
+<script type=text/javascript>var gitalk=new Gitalk({id:"2022-11-19 23:56:52 \u002b0800 \u002b0800",title:"使用Hugo建立静态博客，并托管在Github Pages上",clientID:"5ea75f603117948d8d37",clientSecret:"26c617c6bce9a975c2a65a68f1ca2a2cc7dde587",repo:"blog",owner:"zhangsheng377",admin:["zhangsheng377"],body:decodeURI(location.href)});gitalk.render("gitalk-container")</script><noscript>Please enable JavaScript to view the <a href=https://github.com/gitalk/gitalk>comments powered by gitalk.</a></noscript></div></main><footer id=footer class=footer><div class=social-links><a href=mailto:435878393@qq.com class="iconfont icon-email" title=email></a>
+<a href=https://www.linkedin.com/in/zhangshengdong/ class="iconfont icon-linkedin" title=linkedin></a>
+<a href=https://github.com/zhangsheng377/ class="iconfont icon-github" title=github></a>
+<a href=https://www.zhangshengdong.com/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>由 <a class=hexo-link href=https://gohugo.io>Hugo</a> 强力驱动</span>
+<span class=division>|</span>
+<span class=theme-info>主题 -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span><div class=busuanzi-footer><span id=busuanzi_container_site_pv>本站总访问量 <span id=busuanzi_value_site_pv><img src=/img/spinner.svg alt=spinner.svg></span> 次</span>
+<span class=division>|</span>
+<span id=busuanzi_container_site_uv>本站总访客数 <span id=busuanzi_value_site_uv><img src=/img/spinner.svg alt=spinner.svg></span> 人</span></div><span class=copyright-year>&copy;
+2019 -
+2022<span class=heart><i class="iconfont icon-heart"></i></span><span><a href=https://beian.miit.gov.cn/ target=_blank>苏ICP备15009593号-1</a></span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script>
+<script type=text/javascript src=/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js></script>
+<script type=text/javascript>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],tags:"ams"}}</script><script async src=https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin=anonymous></script>
+<script id=baidu_analytics>var _hmt=_hmt||[];(function(){if(window.location.hostname==="localhost")return;var t,e=document.createElement("script");e.async=!0,e.src="https://hm.baidu.com/hm.js?c602db2501643f661d9789f9e9707386",t=document.getElementsByTagName("script")[0],t.parentNode.insertBefore(e,t)})()</script></body></html>
