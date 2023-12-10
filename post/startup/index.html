@@ -1,0 +1,123 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>linux/windows开机自启动 - 张胜东的博客</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="张胜东"><meta name=description content="背景 最近家里新装了一台电脑，配上3090显卡，准备当gpu服务器。所以就要装双系统，ubuntu的当服务器跑大模型，windows的装ste"><meta name=keywords content="linux,windows,自启动"><meta name=baidu-site-verification content="qWR9jJPJ9e"><meta name=google-site-verification content="s9FkJZw4X2alyC8-nsdZgiPHBwX6uqr1QVNxRaGfDKY"><meta name=generator content="Hugo 0.102.3 with theme even"><link rel=canonical href=https://www.zhangshengdong.com/post/startup/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><script async src=//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js></script>
+<link href=/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="linux/windows开机自启动"><meta property="og:description" content="背景 最近家里新装了一台电脑，配上3090显卡，准备当gpu服务器。所以就要装双系统，ubuntu的当服务器跑大模型，windows的装ste"><meta property="og:type" content="article"><meta property="og:url" content="https://www.zhangshengdong.com/post/startup/"><meta property="article:section" content="post"><meta property="article:published_time" content="2023-12-10T23:33:58+08:00"><meta property="article:modified_time" content="2023-12-11T00:00:08+08:00"><meta itemprop=name content="linux/windows开机自启动"><meta itemprop=description content="背景 最近家里新装了一台电脑，配上3090显卡，准备当gpu服务器。所以就要装双系统，ubuntu的当服务器跑大模型，windows的装ste"><meta itemprop=datePublished content="2023-12-10T23:33:58+08:00"><meta itemprop=dateModified content="2023-12-11T00:00:08+08:00"><meta itemprop=wordCount content="829"><meta itemprop=keywords content="linux,windows,自启动,"><meta name=twitter:card content="summary"><meta name=twitter:title content="linux/windows开机自启动"><meta name=twitter:description content="背景 最近家里新装了一台电脑，配上3090显卡，准备当gpu服务器。所以就要装双系统，ubuntu的当服务器跑大模型，windows的装ste"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>张胜东的博客</a></div><div class=mobile-navbar-icon><span></span>
+<span></span>
+<span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/tags/><li class=mobile-menu-item>Tags</li></a><a href=/categories/><li class=mobile-menu-item>Categories</li></a><a href=/about/><li class=mobile-menu-item>About</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>张胜东的博客</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/tags/>Tags</a></li><li class=menu-item><a class=menu-item-link href=/categories/>Categories</a></li><li class=menu-item><a class=menu-item-link href=/about/>About</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>linux/windows开机自启动</h1><div class=post-meta><span class=post-time>2023-12-10</span><div class=post-category><a href=/categories/%E5%B7%A5%E7%A8%8B/>工程</a></div><span class=more-meta>约 829 字</span>
+<span class=more-meta>预计阅读 2 分钟</span>
+<span id=busuanzi_container_page_pv class=more-meta><span id=busuanzi_value_page_pv><img src=/img/spinner.svg alt=spinner.svg></span> 次阅读</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>文章目录</h2><div class="post-toc-content always-active"><nav id=TableOfContents><ul><li><ul><li><a href=#背景>背景</a></li><li><a href=#ubuntu自启动>Ubuntu自启动</a></li><li><a href=#windows自启动>windows自启动</a></li><li><a href=#homeassistant的configurationyaml>HomeAssistant的configuration.yaml</a></li></ul></li></ul></nav></div></div><div class=post-content><h2 id=背景>背景</h2><p>最近家里新装了一台电脑，配上3090显卡，准备当gpu服务器。所以就要装双系统，ubuntu的当服务器跑大模型，windows的装steam用来打游戏。</p><p>只是为了日常使用的方便，我把wol功能打开，grub默认直接进Ubuntu。但这样要想打游戏时，就必须要手动敲命令切换到grub的第二选项重启，有点麻烦。</p><p>所以准备用HomeAssistant来控制开关机和切换。试了半天，还是准备在服务器上自启动restful控制接口程序，HomeAssistant直接通过url控制。</p><h2 id=ubuntu自启动>Ubuntu自启动</h2><p><a href=https://blog.csdn.net/feiying0canglang/article/details/124695749>https://blog.csdn.net/feiying0canglang/article/details/124695749</a></p><ol><li>创建rc-local.service文件</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>sudo cp /lib/systemd/system/rc-local.service /etc/systemd/system
+</span></span></code></pre></td></tr></table></div></div><p>然后修改/etc/systemd/system/rc-local.service，在文件最下方添加如下两行：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>Install<span class=o>]</span>   
+</span></span><span class=line><span class=cl><span class=nv>WantedBy</span><span class=o>=</span>multi-user.target   
+</span></span><span class=line><span class=cl><span class=nv>Alias</span><span class=o>=</span>rc-local.service
+</span></span></code></pre></td></tr></table></div></div><ol start=2><li>创建rc.local文件</li></ol><p>创建/etc/rc.local，里边写自己想要运行的命令。例：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=cp>#!/bin/sh
+</span></span></span><span class=line><span class=cl><span class=cp></span>mount -t nfs 192.168.10.36:/volume1/nfs /mnt/nfs
+</span></span><span class=line><span class=cl>ethtool -s eno1 wol g
+</span></span><span class=line><span class=cl>/home/zsd/miniconda3/bin/python /home/zsd/gpu_server.py <span class=p>&amp;</span>&gt;/home/zsd/gpu_server.log
+</span></span><span class=line><span class=cl><span class=nb>exit</span> <span class=m>0</span>
+</span></span></code></pre></td></tr></table></div></div><p>（wol的g模式时兼容性最好的，如果是d就说明disable）</p><p>（指明python可执行文件地址的方式可以用conda环境。）</p><p>给/etc/rc.local加上可执行权限</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>sudo chmod +x /etc/rc.local
+</span></span></code></pre></td></tr></table></div></div><ol start=3><li>systemctl命令</li></ol><p>启动服务</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>sudo systemctl start rc-local.service
+</span></span></code></pre></td></tr></table></div></div><p>查看服务状态</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>sudo systemctl status rc-local.service
+</span></span></code></pre></td></tr></table></div></div><h2 id=windows自启动>windows自启动</h2><ol><li>创建gpu_server.py</li><li>创建gpu_server.bat</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bat data-lang=bat><span class=line><span class=cl><span class=k>cd</span> C:\ProgramData\gpu_server
+</span></span><span class=line><span class=cl><span class=k>call</span> activate base
+</span></span><span class=line><span class=cl>python gpu_server.py
+</span></span><span class=line><span class=cl><span class=p>@</span><span class=c1>REM gunicorn -b 0.0.0.0:28866 gpu_server:app</span>
+</span></span></code></pre></td></tr></table></div></div><ol start=3><li>创建run.vbs</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>set ws=WScript.CreateObject(&#34;WScript.Shell&#34;) 
+</span></span><span class=line><span class=cl>ws.Run &#34;C:\ProgramData\battery\server.bat /start&#34;,0
+</span></span></code></pre></td></tr></table></div></div><p>（这样就没有黑色cmd窗口了）</p><ol start=4><li>创建启动快捷方式</li></ol><p>win+r键弹出“运行”窗口，输入“shell:startup”，打开启动文件夹。</p><p>把刚才的run.vbs创建的快捷方式复制来，可以改名字。</p><p>这样，windows的自启动就弄好了，可以从任务管理器中看到。</p><h2 id=homeassistant的configurationyaml>HomeAssistant的configuration.yaml</h2><p>增加：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>sensor</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>arest</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># resource: http://192.168.10.62:28866</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>resource</span><span class=p>:</span><span class=w> </span><span class=l>http://zhangsheng377.wicp.net/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>monitored_variables</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>battery</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>battery</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>switch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>wake_on_lan</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;GPU_server&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>mac</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;E8:9C:25:74:7F:31&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;192.168.10.63&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>broadcast_address</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;192.168.10.255&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>broadcast_port</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;9&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>turn_off</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>service</span><span class=p>:</span><span class=w> </span><span class=l>shell_command.shutdown_gpu_server</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>command_line</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>switch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;GPU_server_reboot&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>command_on</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;curl -X GET http://192.168.10.63:28866/reboot.action&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>switch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;GPU_server_reboot_to_other&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>command_on</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;curl -X GET http://192.168.10.63:28866/reboot_to_other.action&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>shell_command</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>shutdown_gpu_server</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;curl -X GET http://192.168.10.63:28866/shutdown.action&#34;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></div><div class=post-reward><input type=checkbox name=reward id=reward hidden>
+<label class=reward-button for=reward>赞赏支持</label><div class=qr-code><label class=qr-code-image for=reward><img class=image src=/images/money_weixin_20200719212002.png>
+<span>微信打赏</span></label>
+<label class=qr-code-image for=reward><img class=image src=/images/alipay_20200801211208.png>
+<span>支付宝打赏</span></label></div></div><footer class=post-footer><div class=post-tags><a href=/tags/linux/>linux</a>
+<a href=/tags/windows/>windows</a>
+<a href=/tags/%E8%87%AA%E5%90%AF%E5%8A%A8/>自启动</a></div><nav class=post-nav><a class=next href=/post/docker_with_esxi/><span class="next-text nav-default">在esxi虚拟机上部署docker</span>
+<span class="next-text nav-mobile">下一篇</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div><div id=gitalk-container></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js crossorigin=anonymous></script>
+<script type=text/javascript>var gitalk=new Gitalk({id:"2023-12-10 23:33:58 \u002b0800 \u002b0800",title:"linux/windows开机自启动",clientID:"5ea75f603117948d8d37",clientSecret:"26c617c6bce9a975c2a65a68f1ca2a2cc7dde587",repo:"blog",owner:"zhangsheng377",admin:["zhangsheng377"],body:decodeURI(location.href),proxy:"https://vercel.prohibitorum.top/github_access_token"});gitalk.render("gitalk-container")</script><noscript>Please enable JavaScript to view the <a href=https://github.com/gitalk/gitalk>comments powered by gitalk.</a></noscript></div></main><footer id=footer class=footer><div class=social-links><a href=mailto:435878393@qq.com class="iconfont icon-email" title=email></a>
+<a href=https://www.linkedin.com/in/zhangshengdong/ class="iconfont icon-linkedin" title=linkedin></a>
+<a href=https://github.com/zhangsheng377/ class="iconfont icon-github" title=github></a>
+<a href=https://www.zhangshengdong.com/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>由 <a class=hexo-link href=https://gohugo.io>Hugo</a> 强力驱动</span>
+<span class=division>|</span>
+<span class=theme-info>主题 -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span><div class=busuanzi-footer><span id=busuanzi_container_site_pv>本站总访问量 <span id=busuanzi_value_site_pv><img src=/img/spinner.svg alt=spinner.svg></span> 次</span>
+<span class=division>|</span>
+<span id=busuanzi_container_site_uv>本站总访客数 <span id=busuanzi_value_site_uv><img src=/img/spinner.svg alt=spinner.svg></span> 人</span></div><span class=copyright-year>&copy;
+2019 -
+2023<span class=heart><i class="iconfont icon-heart"></i></span><span><a href=https://beian.miit.gov.cn/ target=_blank>苏ICP备15009593号-1</a></span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin=anonymous></script> <script src=https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin=anonymous></script> <script src=https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin=anonymous></script> <script src=https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin=anonymous></script> <script src=https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js integrity=sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP crossorigin=anonymous></script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css integrity=sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF crossorigin=anonymous><script type=text/javascript src=/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js></script>
+<script type=text/javascript>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],tags:"ams"}}</script><script async src=https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin=anonymous></script>
+<script id=baidu_analytics>var _hmt=_hmt||[];(function(){if(window.location.hostname==="localhost")return;var t,e=document.createElement("script");e.async=!0,e.src="https://hm.baidu.com/hm.js?c602db2501643f661d9789f9e9707386",t=document.getElementsByTagName("script")[0],t.parentNode.insertBefore(e,t)})()</script></body></html>
