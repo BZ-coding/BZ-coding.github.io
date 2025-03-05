@@ -1,0 +1,216 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>R1-Zero复现 - 张胜东的博客</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="张胜东"><meta name=description content="前言 最近大伙儿们对R1的复现热情可谓是空前高涨，我也趁此机会，用家里的单卡3090，使用openr1+lora，尝试复现一把openr1-z"><meta name=keywords content="ai,llm,grpo,r1"><meta name=baidu-site-verification content="qWR9jJPJ9e"><meta name=google-site-verification content="s9FkJZw4X2alyC8-nsdZgiPHBwX6uqr1QVNxRaGfDKY"><meta name=generator content="Hugo 0.102.3 with theme even"><link rel=canonical href=https://www.zhangshengdong.com/post/grpo_repetition/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><script async src=//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js></script>
+<link href=/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="R1-Zero复现"><meta property="og:description" content="前言 最近大伙儿们对R1的复现热情可谓是空前高涨，我也趁此机会，用家里的单卡3090，使用openr1+lora，尝试复现一把openr1-z"><meta property="og:type" content="article"><meta property="og:url" content="https://www.zhangshengdong.com/post/grpo_repetition/"><meta property="article:section" content="post"><meta property="article:published_time" content="2025-03-05T23:54:58+08:00"><meta property="article:modified_time" content="2025-03-06T00:28:01+08:00"><meta itemprop=name content="R1-Zero复现"><meta itemprop=description content="前言 最近大伙儿们对R1的复现热情可谓是空前高涨，我也趁此机会，用家里的单卡3090，使用openr1+lora，尝试复现一把openr1-z"><meta itemprop=datePublished content="2025-03-05T23:54:58+08:00"><meta itemprop=dateModified content="2025-03-06T00:28:01+08:00"><meta itemprop=wordCount content="3818"><meta itemprop=keywords content="ai,llm,grpo,r1,"><meta name=twitter:card content="summary"><meta name=twitter:title content="R1-Zero复现"><meta name=twitter:description content="前言 最近大伙儿们对R1的复现热情可谓是空前高涨，我也趁此机会，用家里的单卡3090，使用openr1+lora，尝试复现一把openr1-z"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>张胜东的博客</a></div><div class=mobile-navbar-icon><span></span>
+<span></span>
+<span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/tags/><li class=mobile-menu-item>Tags</li></a><a href=/categories/><li class=mobile-menu-item>Categories</li></a><a href=/about/><li class=mobile-menu-item>About</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>张胜东的博客</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/tags/>Tags</a></li><li class=menu-item><a class=menu-item-link href=/categories/>Categories</a></li><li class=menu-item><a class=menu-item-link href=/about/>About</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>R1-Zero复现</h1><div class=post-meta><span class=post-time>2025-03-05</span><div class=post-category><a href=/categories/%E7%AE%97%E6%B3%95/>算法</a></div><span class=more-meta>约 3818 字</span>
+<span class=more-meta>预计阅读 8 分钟</span>
+<span id=busuanzi_container_page_pv class=more-meta><span id=busuanzi_value_page_pv><img src=/img/spinner.svg alt=spinner.svg></span> 次阅读</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>文章目录</h2><div class="post-toc-content always-active"><nav id=TableOfContents><ul><li><ul><li><a href=#前言>前言</a></li><li><a href=#实验效果>实验效果</a><ul><li><a href=#qwen7b-instruct模型中文通用数据>Qwen7B-Instruct模型+中文通用数据</a></li><li><a href=#qwen7b-base模型数学数据>Qwen7B-Base模型+数学数据</a></li></ul></li><li><a href=#实验发现感想>实验发现&感想</a><ul><li><a href=#1reward最好解耦并平滑>1、reward最好解耦并平滑</a></li><li><a href=#2loss初始一直为0的分析和加速方案>2、loss初始一直为0的分析和加速方案</a></li><li><a href=#3关于think标签的思考>3、关于think标签的思考</a></li><li><a href=#4自定义length_reward>4、自定义length_reward</a></li><li><a href=#5通用任务的设计>5、通用任务的设计</a></li><li><a href=#6需要加入思考过程奖励>6、需要加入思考过程奖励</a></li><li><a href=#其他感悟>其他感悟</a></li></ul></li><li><a href=#待办>待办</a></li></ul></li></ul></nav></div></div><div class=post-content><h2 id=前言>前言</h2><p>最近大伙儿们对R1的复现热情可谓是空前高涨，我也趁此机会，用家里的单卡3090，使用openr1+lora，尝试复现一把openr1-zero。</p><p>我的试验记录：</p><p>R1复现
+<a href=https://docs.qq.com/aio/DZXBORFFUWEFPYnFG%3Fp%3DHVXAR5q2ACs0YdfYfsKPGT>https://docs.qq.com/aio/DZXBORFFUWEFPYnFG%3Fp%3DHVXAR5q2ACs0YdfYfsKPGT</a></p><h2 id=实验效果>实验效果</h2><h3 id=qwen7b-instruct模型中文通用数据>Qwen7B-Instruct模型+中文通用数据</h3><p><img src=/images/grpo_repetition_0.jpg alt></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>&lt;|im_start|&gt;system
+</span></span><span class=line><span class=cl>You are a helpful AI Assistant that provides well-reasoned and detailed responses. You first think about the reasoning process as an internal monologue and then provide the user with the answer. Respond in the following format: &lt;think&gt;
+</span></span><span class=line><span class=cl>...
+</span></span><span class=line><span class=cl>&lt;/think&gt;
+</span></span><span class=line><span class=cl>&lt;answer&gt;
+</span></span><span class=line><span class=cl>...
+</span></span><span class=line><span class=cl>&lt;/answer&gt;&lt;|im_end|&gt;
+</span></span><span class=line><span class=cl>&lt;|im_start|&gt;user
+</span></span><span class=line><span class=cl>病毒的外壳和包膜结构如何影响它们不同的传播策略？&lt;|im_end|&gt;
+</span></span><span class=line><span class=cl>&lt;|im_start|&gt;assistant
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>&lt;think&gt;
+</span></span><span class=line><span class=cl>首先，我们需要了解病毒外壳（衣壳）和包膜的基本结构。病毒的外壳通常由蛋白质组成，这些蛋白质围成一个壳体，保护病毒的遗传物质。而包膜则是由脂质双层组成，病毒通过感染宿主细胞后获取这些包膜。这些结构对病毒的传播具有不同的影响。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>1. 衣壳：衣壳的作用是保护病毒的遗传物质不被环境中的酶降解，同时帮助病毒识别和附着到宿主细胞的受体。不同病毒的衣壳结构各异，这种差异可以影响病毒识别特定宿主细胞的能力，从而影响其传播方式。
+</span></span><span class=line><span class=cl>2. 包膜：包膜的脂质双层来源于宿主细胞，它富含蛋白质和糖类，这些成分可以与宿主细胞上的受体结合，从而实现病毒的细胞融合。不同包膜蛋白的存在可以影响病毒的宿主范围和细胞侵入机制，从而影响其传播特性。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>基于以上分析，我们可以得出结论：病毒的外壳和包膜在结构上的差异会导致其有不同的传播策略，例如通过特定的受体识别、细胞侵入机制等。这些特性决定了病毒在不同宿主细胞之间的传播效率和范围。
+</span></span><span class=line><span class=cl>&lt;/think&gt;
+</span></span><span class=line><span class=cl>&lt;answer&gt;
+</span></span><span class=line><span class=cl>病毒的外壳（衣壳）和包膜在结构上的差异会影响它们的传播策略。衣壳主要保护病毒遗传物质并帮助其识别宿主细胞，而包膜则有助于细胞融合和侵入。不同的结构特征使得病毒能够利用不同的宿主受体进行识别，利用不同的细胞侵入机制，从而影响其在宿主间的传播效率和范围。
+</span></span><span class=line><span class=cl>&lt;/answer&gt;
+</span></span></code></pre></td></tr></table></div></div><p><a href=https://wandb.ai/bz-zhangshengdong/OpenR1/runs/ce7y7rgq%3Fnw%3Dnwuserzhangshengdong>https://wandb.ai/bz-zhangshengdong/OpenR1/runs/ce7y7rgq%3Fnw%3Dnwuserzhangshengdong</a></p><h3 id=qwen7b-base模型数学数据>Qwen7B-Base模型+数学数据</h3><p><img src=/images/grpo_repetition_1.jpg alt></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>&lt;|im_start|&gt;system
+</span></span><span class=line><span class=cl>You are a helpful AI Assistant that provides well-reasoned and detailed responses. You first think about the reasoning process as an internal monologue and then provide the user with the answer. Respond in the following format: &lt;think&gt;
+</span></span><span class=line><span class=cl>...
+</span></span><span class=line><span class=cl>&lt;/think&gt;
+</span></span><span class=line><span class=cl>&lt;answer&gt;
+</span></span><span class=line><span class=cl>...
+</span></span><span class=line><span class=cl>&lt;/answer&gt;&lt;|im_end|&gt;
+</span></span><span class=line><span class=cl>&lt;|im_start|&gt;user
+</span></span><span class=line><span class=cl>A bag contains four pieces of paper, each labeled with one of the digits $1$, $2$, $3$ or $4$, with no repeats. Three of these pieces are drawn, one at a time without replacement, to construct a three-digit number. What is the probability that the three-digit number is a multiple of $3$?
+</span></span><span class=line><span class=cl>$\textbf{(A)}\ \frac{1}{4}\qquad\textbf{(B)}\ \frac{1}{3}\qquad\textbf{(C)}\ \frac{1}{2}\qquad\textbf{(D)}\ \frac{2}{3}\qquad\textbf{(E)}\ \frac{3}{4}$&lt;|im_end|&gt;
+</span></span><span class=line><span class=cl>&lt;|im_start|&gt;assistant
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>&lt;think&gt;
+</span></span><span class=line><span class=cl>To solve this problem, we first determine all possible three-digit numbers that can be formed from the digits 1, 2, 3, and 4 without replacement. 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>The total number of different three-digit numbers that can be formed from these digits is calculated by considering the permutations of 3 out of 4 digits, which is $P(4, 3) = 4!/(4-3)! = 4 \times 3 \times 2 = 24$.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Next, we need to count how many of these 24 numbers are multiples of 3. A number is a multiple of 3 if the sum of its digits is a multiple of 3. Let&#39;s list the sums of all possible combinations of three digits taken from {1, 2, 3, 4}:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>- Sum of digits {1, 2, 3} = 1 + 2 + 3 = 6, which is a multiple of 3.
+</span></span><span class=line><span class=cl>- Sum of digits {1, 2, 4} = 1 + 2 + 4 = 7, which is not a multiple of 3.
+</span></span><span class=line><span class=cl>- Sum of digits {1, 3, 4} = 1 + 3 + 4 = 8, which is not a multiple of 3.
+</span></span><span class=line><span class=cl>- Sum of digits {2, 3, 4} = 2 + 3 + 4 = 9, which is a multiple of 3.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>So there are 2 combinations out of the 4 that result in a sum that is a multiple of 3. For each of these combinations, we can permute the three digits in $3! = 6$ ways. 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Therefore, the total number of &#34;favorable&#34; outcomes that result in a three-digit number being a multiple of 3 is $2 \times 6 = 12$.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Hence, the probability that a randomly selected three-digit number is a multiple of 3 is given by the ratio of &#34;favorable&#34; outcomes to the total number of outcomes: 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>$$ \text{Probability} = \frac{12}{24} = \frac{1}{2} $$
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>&lt;/think&gt;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>&lt;answer&gt;
+</span></span><span class=line><span class=cl>\boxed{\frac{1}{2}}
+</span></span><span class=line><span class=cl>&lt;/answer&gt;
+</span></span></code></pre></td></tr></table></div></div><p><a href=https://wandb.ai/bz-zhangshengdong/OpenR1/runs/4vs3447v%3Fnw%3Dnwuserzhangshengdong>https://wandb.ai/bz-zhangshengdong/OpenR1/runs/4vs3447v%3Fnw%3Dnwuserzhangshengdong</a></p><p>基本已经算是训的挺好的了，但由于单卡资源有限，就没有跑评测了。大家姑且就看看格式吧，只求形似，不求神似。（PS：笔者认为，语言是思维的载体，所以就算是模仿，只要仿的多了，自然也就有了思考能力，大家这么多年不也正是这么学过来的嘛）</p><p>对了，再汇报一下，笔者在模型回答中很早就发现了验证能力，即模型在算出答案后，会再换个方法验算一遍；
+<img src=/images/grpo_repetition_2.jpg alt>
+但所谓的aha时刻（发现自己计算错误并改正），则由于数量太少并不好发现，更多的是模型在算到一半时，发现条件缺失则会自己假设一个，或自己降低精度，获取一个符合问题的选项。</p><h2 id=实验发现感想>实验发现&感想</h2><h3 id=1reward最好解耦并平滑>1、reward最好解耦并平滑</h3><p>openr1官方的长度奖励是“正确时越短越好，错误时越长越好”，但笔者在实验时发现，在简单数据上，这种reward可能被模型走捷径，即模型会直接输出答案，退化成了instruct模型。（怪不得有人说，sft就是一种特殊的rl）。所以笔者认为，reward之间最好不要耦合，正确性就是正确性得分，长度的分就是长度得分，最后的score直接把所有reward相加即可，不用人为设计在什么正确的情况下是多少分，另一种情况又是多少分，reward多了之后人脑是设计不过来的。</p><p>平滑则是最好把01打分改成0-1的float得分。我的实验记录里一开始说的好像是长度，但第二天官方就加上了cos。另一个例子是format，官方原有的是满足完整的格式才得1分否则0分；现在又多了一个reward，逻辑是这四个标签，满足一个得0.25分，全部满足得1分。笔者感觉这种略平滑的奖励函数要比之前的01要好。</p><h3 id=2loss初始一直为0的分析和加速方案>2、loss初始一直为0的分析和加速方案</h3><p>在早期训练时，笔者以及网上很多人都发现，grpo在初始的很长一段时间内loss都是0，训练的很慢。</p><p>笔者专门分析了原因，并提出了加速方案，很简单，关闭warmup即可。</p><p>GRPO Loss初期为0的原因与改进方法:
+<a href=https://www.zhangshengdong.com/post/grpo_loss/>https://www.zhangshengdong.com/post/grpo_loss/</a></p><h3 id=3关于think标签的思考>3、关于think标签的思考</h3><p>上文说到，语言其实就是思考的外在形式，甚至语言决定了思维模式。所以笔者认为，不必太看重think阶段的对语言一致性，只要保证answer阶段的语言符合要求即可，不过这个应该是属于正确性的范畴了。</p><p>其次是，笔者认为可以尝试删掉think标签，只保留answer标签。因为我们人类思考其实就跟正常说话一样，不需要专门提示“我要开始思考了哦”，反而是在最终决定答案时需要慎之又慎，所以删除think标签只保留answer标签，应该是最符合人类思维过程的。当然，这点跟在现在的r1模型只有think标签是反的。</p><h3 id=4自定义length_reward>4、自定义length_reward</h3><p>笔者是按照时间顺序写的感悟，其实上面几步完成后，数学就已经能复现得不错了。</p><p>接下来笔者就开始卷各种自定义reward了。其中以length_reward和accuracy_reward为甚。但一般认为，模型输出要足够长，才能发挥思考得优势，换取更高的正确率，所以就要求我们要人为的拉长模型输出。所以这里先说一下length_reward。</p><p>笔者试过各种cos、e指数、多项式（3次方、平方）、滑窗等，最后发现，如果模型本身长度不错，那直接用y=x就可以了；如果模型本身输出长度偏短，那用y=x*x较好。
+<img src=/images/grpo_repetition_3.jpg alt>
+<img src=/images/grpo_repetition_4.jpg alt>
+<img src=/images/grpo_repetition_5.jpg alt>
+其他的公式（上面）都是花里胡哨。</p><h3 id=5通用任务的设计>5、通用任务的设计</h3><p>在复现了数学r1之后，笔者开始尝试训练中文通用任务的R1模型。</p><p>而通用任务的正确性判断就成了一个绕不过去的坎。笔者的设计思路是使用大模型去给模型回答打分（根据问题和参考答案），而为了充分利用资源，笔者修改了trl源码，使用ref_model进行大模型推理。而又因为有参考答案可供对比，相当于只是个orm模型，所以reward hacking的问题应该还好。</p><h3 id=6需要加入思考过程奖励>6、需要加入思考过程奖励</h3><p>在训练中文通用任务时，笔者发现了一个现象：</p><p>问题：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>设 $a \in \mathbf{R}$, 则 “ $a&gt;1$ ” 是 “ $a^{2}&gt;1$ ” 的 ( )
+</span></span><span class=line><span class=cl>A. 充分非必要条件
+</span></span><span class=line><span class=cl>B. 必要非充分条件
+</span></span><span class=line><span class=cl>C. 充要条件
+</span></span><span class=line><span class=cl>D. 既非充分也非必要条件
+</span></span></code></pre></td></tr></table></div></div><p>回答1：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>&lt;think&gt;
+</span></span><span class=line><span class=cl>要解答这个逻辑关系判断题，我们首先要明确什么是有充分条件、必要条件和充要条件。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>1. 当命题P能够推出命题Q时，P为Q的充分条件。
+</span></span><span class=line><span class=cl>2. 当命题Q能够推出命题P时，P为Q的必要条件。
+</span></span><span class=line><span class=cl>3. 当P既能推出Q，又能被Q推出时，P是Q的充要条件。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>题目中的条件是“$a&gt;1$”和结论是“$a^2&gt;1$”。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>首先，考虑“$a&gt;1$”是否为“$a^2&gt;1$”的充分条件。如果$a&gt;1$，那么$a^2$显然大于1，所以“$a&gt;1$”确实能推出“$a^2&gt;1$”。
+</span></span><span class=line><span class=cl>其次，考虑“$a^2&gt;1$”是否能推出“$a&gt;1$”。这将覆盖所有可能的情况，如$a&lt;-1$时同样满足$a^2&gt;1$，但不满足$a&gt;1$。因此，不能从$a^2&gt;1$推出$a&gt;1$。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>综上所述，“$a&gt;1$”是“$a^2&gt;1$”的充分非必要条件。
+</span></span><span class=line><span class=cl>&lt;/think&gt;
+</span></span><span class=line><span class=cl>&lt;answer&gt;
+</span></span><span class=line><span class=cl>A. 充分非必要条件
+</span></span><span class=line><span class=cl>&lt;/answer&gt;
+</span></span></code></pre></td></tr></table></div></div><p>回答2：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>&lt;think&gt;
+</span></span><span class=line><span class=cl>首先，我们需要理解两个条件之间的关系。
+</span></span><span class=line><span class=cl>1. 若 \(a &gt; 1\)，则 \(a^2 &gt; 1\) 显然成立，因为平方函数在正实数上是增函数。
+</span></span><span class=line><span class=cl>2. 但若 \(a^2 &gt; 1\)，则 \(a\) 可以是任何大于 1 的数，也可以是小于 -1 的负数，因为 \((-a)^2 = a^2\)。
+</span></span><span class=line><span class=cl>3. 这意味着 \(a &gt; 1\) 是 \(a^2 &gt; 1\) 的充分条件，但不是必要条件。因为还有其他条件（如 \(a &lt; -1\)）也可以使 \(a^2 &gt; 1\) 成立。
+</span></span><span class=line><span class=cl>&lt;/think&gt;
+</span></span><span class=line><span class=cl>&lt;answer&gt;
+</span></span><span class=line><span class=cl>根据上述分析，“\(a &gt; 1\)&#34; 是 “\(a^2 &gt; 1\)&#34; 的充分非必要条件。正确答案是 A.
+</span></span><span class=line><span class=cl>&lt;/answer&gt;
+</span></span></code></pre></td></tr></table></div></div><p>这两个回答，人肯定会觉得上面的回答1更加充分完整，应该得更高的分数。</p><p>但其实上面的回答reward为2.22，下面的reward为2.217。因为大模型只比较answer部分，所以下面简短一点的回答反而高了0.017分。</p><p>这就导致笔者提出，需要加入一个思考过程奖励函数，去引导模型做出更有条理、更像是在思考的回答。</p><p>而笔者又不愿意使用openr1的按照“first、second。。。”给分的过程奖励函数，所以又使用ref_model新增了一个判断模型回答条理性的prompt。</p><p>实际效果就是最上面的实验效果，还不错。像这两个回答，基本都能拉开近一分的差距了。</p><h3 id=其他感悟>其他感悟</h3><p>模型越大越好，</p><p>加大num_generations和batch_size</p><h2 id=待办>待办</h2><ul><li><input disabled type=checkbox> 各种标签是否需要手动加到模型词表里？</li><li><input disabled type=checkbox> 把beta关掉，不要求模型尽可能跟之前类似</li><li><input disabled type=checkbox> 把正确答案也作为一个生成放进去？</li><li><input disabled type=checkbox> 把数据按难度或loss进行训练中的动态采样</li></ul></div><div class=post-reward><input type=checkbox name=reward id=reward hidden>
+<label class=reward-button for=reward>赞赏支持</label><div class=qr-code><label class=qr-code-image for=reward><img class=image src=/images/money_weixin_20200719212002.png>
+<span>微信打赏</span></label>
+<label class=qr-code-image for=reward><img class=image src=/images/alipay_20200801211208.png>
+<span>支付宝打赏</span></label></div></div><footer class=post-footer><div class=post-tags><a href=/tags/ai/>ai</a>
+<a href=/tags/llm/>llm</a>
+<a href=/tags/grpo/>grpo</a>
+<a href=/tags/r1/>r1</a></div><nav class=post-nav><a class=next href=/post/grpo_loss/><span class="next-text nav-default">GRPO Loss初期为0的原因与改进方法</span>
+<span class="next-text nav-mobile">下一篇</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div><div id=gitalk-container></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js crossorigin=anonymous></script>
+<script type=text/javascript>var gitalk=new Gitalk({id:"2025-03-05 23:54:58 \u002b0800 \u002b0800",title:"R1-Zero复现",clientID:"5ea75f603117948d8d37",clientSecret:"26c617c6bce9a975c2a65a68f1ca2a2cc7dde587",repo:"blog",owner:"zhangsheng377",admin:["zhangsheng377"],body:decodeURI(location.href),proxy:"https://vercel.prohibitorum.top/github_access_token"});gitalk.render("gitalk-container")</script><noscript>Please enable JavaScript to view the <a href=https://github.com/gitalk/gitalk>comments powered by gitalk.</a></noscript></div></main><footer id=footer class=footer><div class=social-links><a href=mailto:435878393@qq.com class="iconfont icon-email" title=email></a>
+<a href=https://www.linkedin.com/in/zhangshengdong/ class="iconfont icon-linkedin" title=linkedin></a>
+<a href=https://github.com/zhangsheng377/ class="iconfont icon-github" title=github></a>
+<a href=https://www.zhangshengdong.com/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>由 <a class=hexo-link href=https://gohugo.io>Hugo</a> 强力驱动</span>
+<span class=division>|</span>
+<span class=theme-info>主题 -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span><div class=busuanzi-footer><span id=busuanzi_container_site_pv>本站总访问量 <span id=busuanzi_value_site_pv><img src=/img/spinner.svg alt=spinner.svg></span> 次</span>
+<span class=division>|</span>
+<span id=busuanzi_container_site_uv>本站总访客数 <span id=busuanzi_value_site_uv><img src=/img/spinner.svg alt=spinner.svg></span> 人</span></div><span class=copyright-year>&copy;
+2019 -
+2025<span class=heart><i class="iconfont icon-heart"></i></span><span><a href=https://beian.miit.gov.cn/ target=_blank>苏ICP备15009593号-1</a></span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin=anonymous></script> <script src=https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin=anonymous></script> <script src=https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin=anonymous></script> <script src=https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin=anonymous></script> <script src=https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js integrity=sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP crossorigin=anonymous></script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css integrity=sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF crossorigin=anonymous><script type=text/javascript src=/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js></script>
+<script type=text/javascript>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],tags:"ams"}}</script><script async src=https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin=anonymous></script>
+<script id=baidu_analytics>var _hmt=_hmt||[];(function(){if(window.location.hostname==="localhost")return;var t,e=document.createElement("script");e.async=!0,e.src="https://hm.baidu.com/hm.js?c602db2501643f661d9789f9e9707386",t=document.getElementsByTagName("script")[0],t.parentNode.insertBefore(e,t)})()</script></body></html>
